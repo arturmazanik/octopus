@@ -2,22 +2,20 @@ name: octopus api dev deploy
 
 
 on:
-push:
-branches:
-- dev
+  push:
+    branches:
+    - dev
 
 
 env:
-SERVER_HOST: ${{ secrets.DEPLOY_HOST_PROD }}
-SERVER_USER: ${{ secrets.DEPLOY_USER_PROD }}
-SERVER_PATH: /var/www/qa.fiery-octopus.by/html
+  SERVER_HOST: ${{ secrets.DEPLOY_HOST_PROD }}
+  SERVER_USER: ${{ secrets.DEPLOY_USER_PROD }}
+  SERVER_PATH: /var/www/qa.fiery-octopus.by/html
 
 
 jobs:
-
-
-deploy:
-runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
 
 steps:
