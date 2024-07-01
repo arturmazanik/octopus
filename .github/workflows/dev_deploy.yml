@@ -37,4 +37,3 @@ jobs:
          key: ${{ secrets.SSH_PRIVATE_KEY }}
          script: |
            composer install
-           php artisan migrate
