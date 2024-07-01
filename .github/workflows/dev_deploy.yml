@@ -3,7 +3,7 @@ name: octopus dev deploy
 on:
  push:
    branches:
-     - main
+     - dev
 
 jobs:
  deploy:
