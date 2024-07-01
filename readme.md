@@ -62,6 +62,7 @@ php artisan serve
 
 You're ready to go! [Visit Octopus Learning Platform](https://fiery-octopus.by) in your browser.
 
+
 ## Running tests
 
 To run the Application tests, run:
