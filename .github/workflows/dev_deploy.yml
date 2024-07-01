@@ -18,16 +18,16 @@ jobs:
      # Deploy
      - name: Copy .env
        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+     - name: Install dependencies
+       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
+     - name: Set required directory permissions
+       run: chmod -R 777 storage bootstrap/cache
      - name: Set .env
        shell: bash
        run: | 
         echo "${{ vars.QA_ENV }}" > .env
         php artisan key:generate
         php artisan --version
-     - name: Install dependencies
-       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
-     - name: Set required directory permissions
-       run: chmod -R 777 storage bootstrap/cache
      # - name: Generate encryption key
      #   run: php artisan key:generate
      - run: rsync -e "ssh -Tv -p ${{secrets.SERVER_PORT}} -i $HOME/.ssh/key -o StrictHostKeyChecking=no -l ${{secrets.DEPLOY_USER_PROD}}" --archive --compress --delete . ${{secrets.DEPLOY_USER_PROD}}@${{secrets.DEPLOY_HOST_PROD}}:/var/www/qa.fiery-octopus.by/html
