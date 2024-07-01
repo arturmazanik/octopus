@@ -20,7 +20,10 @@ jobs:
        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
      - name: Set .env
        shell: bash
-       run: echo "${{ vars.QA_ENV }}" > .env
+       run: | 
+        echo "${{ vars.QA_ENV }}" > .env
+        php artisan key:generate
+        php artisan --version
      - name: Install dependencies
        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
      - name: Set required directory permissions
@@ -36,5 +39,4 @@ jobs:
          port: ${{secrets.SERVER_PORT}}
          key: ${{ secrets.SSH_PRIVATE_KEY }}
          script: |
-           php artisan key:generate
-           php artisan migrate
+           ls
