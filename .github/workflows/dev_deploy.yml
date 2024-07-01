@@ -1,0 +1,41 @@
+name: octopus dev deploy
+
+on:
+ push:
+   branches:
+     - dev
+
+jobs:
+ deploy:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v2
+     # Setup key
+     - run: set -eu
+     - run: mkdir "$HOME/.ssh"
+     - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > "$HOME/.ssh/key"
+     - run: chmod 600 "$HOME/.ssh/key"
+     # Deploy
+     - name: Copy .env
+       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+     # - name: Set .env
+     #   shell: bash
+     #   run: echo "${{ vars.ENVPROD }}" > .env
+     - name: Install dependencies
+       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+     - name: Set required directory permissions
+       run: chmod -R 777 storage bootstrap/cache
+     - name: Generate encryption key
+       run: php artisan key:generate
+     - run: rsync -e "ssh -Tv -p ${{secrets.SERVER_PORT}} -i $HOME/.ssh/key -o StrictHostKeyChecking=no -l ${{secrets.DEPLOY_USER_PROD}}" --archive --compress --delete . ${{secrets.DEPLOY_USER_PROD}}@${{secrets.DEPLOY_HOST_PROD}}:/var/www/qa.fiery-octopus.by/html
+     - name: Run laravel database migrations
+       uses: appleboy/ssh-action@master
+       with:
+         host: ${{ secrets.DEPLOY_HOST_PROD }}
+         username: ${{ secrets.DEPLOY_USER_PROD }}
+         port: ${{secrets.SERVER_PORT}}
+         key: ${{ secrets.SSH_PRIVATE_KEY }}
+         script: |
+           php artisan migrate
+
+
