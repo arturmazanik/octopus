@@ -21,8 +21,8 @@ jobs:
      # - name: Set .env
      #   shell: bash
      #   run: echo "${{ vars.ENVPROD }}" > .env
-     # - name: Install dependencies
-     #   run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+     - name: Install dependencies
+       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
      # - name: Set required directory permissions
      #   run: chmod -R 777 storage bootstrap/cache
      # - name: Generate encryption key
