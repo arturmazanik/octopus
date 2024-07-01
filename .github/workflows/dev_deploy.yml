@@ -24,10 +24,10 @@ jobs:
        run: chmod -R 777 storage bootstrap/cache
      - name: Set .env
        shell: bash
-       run: | 
-        echo "${{ vars.QA_ENV }}" > .env
-        php artisan key:generate
-        php artisan --version
+       run: echo "${{ vars.QA_ENV }}" > .env
+     - name: Update app key
+       shell: bash
+       run: php artisan key:generate
      # - name: Generate encryption key
      #   run: php artisan key:generate
      - run: rsync -e "ssh -Tv -p ${{secrets.SERVER_PORT}} -i $HOME/.ssh/key -o StrictHostKeyChecking=no -l ${{secrets.DEPLOY_USER_PROD}}" --archive --compress --delete . ${{secrets.DEPLOY_USER_PROD}}@${{secrets.DEPLOY_HOST_PROD}}:/var/www/qa.fiery-octopus.by/html
