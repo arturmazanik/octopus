@@ -34,15 +34,11 @@ jobs:
      - name: Update app key
        shell: bash
        run: php artisan key:generate
-     # - name: Generate encryption key
-     #   run: php artisan key:generate
+     - name: Install Dependencies
+       run: npm install
+     - name: Clean install dependencies and build
+       run: |
+        npm ci
+        npm run build
      - run: rsync -e "ssh -Tv -p ${{secrets.SERVER_PORT}} -i $HOME/.ssh/key -o StrictHostKeyChecking=no -l ${{secrets.DEPLOY_USER_PROD}}" --archive --compress --delete . ${{secrets.DEPLOY_USER_PROD}}@${{secrets.DEPLOY_HOST_PROD}}:/var/www/qa.fiery-octopus.by/html
-     - name: Run laravel database migrations
-       uses: appleboy/ssh-action@master
-       with:
-         host: ${{ secrets.DEPLOY_HOST_PROD }}
-         username: ${{ secrets.DEPLOY_USER_PROD }}
-         port: ${{secrets.SERVER_PORT}}
-         key: ${{ secrets.SSH_PRIVATE_KEY }}
-         script: |
-           npm run prod
+
