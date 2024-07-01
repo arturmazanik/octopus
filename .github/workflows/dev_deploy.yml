@@ -38,6 +38,6 @@ jobs:
        run: npm install
      - name: Clean install dependencies and build
        run: |
-        npm run build
+        npm run prod
      - run: rsync -e "ssh -Tv -p ${{secrets.SERVER_PORT}} -i $HOME/.ssh/key -o StrictHostKeyChecking=no -l ${{secrets.DEPLOY_USER_PROD}}" --archive --compress --delete . ${{secrets.DEPLOY_USER_PROD}}@${{secrets.DEPLOY_HOST_PROD}}:/var/www/qa.fiery-octopus.by/html
 
