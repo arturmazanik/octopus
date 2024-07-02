@@ -49,4 +49,5 @@ jobs:
         port: ${{ secrets.SERVER_PORT }}
         command_timeout: 3m
         script: | 
-          php artisan migrate
+         cd ../var/www/qa.fiery-octopus.by/html
+         php artisan migrate
