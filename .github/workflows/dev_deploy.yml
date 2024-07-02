@@ -34,6 +34,9 @@ jobs:
      - name: Update app key
        shell: bash
        run: php artisan key:generate
+     - name: Database Migration
+       shell: bash
+       run: php artisan migrate
      - name: Install Dependencies
        run: npm install
      - name: Clean install dependencies and build
