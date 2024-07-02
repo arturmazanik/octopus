@@ -49,4 +49,4 @@ jobs:
         port: ${{ secrets.SERVER_PORT }}
         command_timeout: 3m
         script: | 
-          echo "Nice Job!!!"
+          php artisan migrate
