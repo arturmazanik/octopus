@@ -43,4 +43,13 @@ jobs:
        run: |
         npm run prod
      - run: rsync -e "ssh -Tv -p ${{secrets.SERVER_PORT}} -i $HOME/.ssh/key -o StrictHostKeyChecking=no -l ${{secrets.DEPLOY_USER_PROD}}" --archive --compress --delete . ${{secrets.DEPLOY_USER_PROD}}@${{secrets.DEPLOY_HOST_PROD}}:/var/www/qa.fiery-octopus.by/html
-
+     - name: Run migrations on server
+       uses: appleboy/ssh-action@v0.1.10
+       with:
+        host: ${{ secrets.DEPLOY_HOST_PROD }}
+        username: ${{ secrets.DEPLOY_USER_PROD }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SERVER_PORT }}
+        command_timeout: 3m
+        script: | 
+          echo "Nice Job!!!"
