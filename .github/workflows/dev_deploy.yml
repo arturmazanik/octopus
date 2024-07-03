@@ -51,3 +51,4 @@ jobs:
         script: | 
          cd ../var/www/qa.fiery-octopus.by/html
          php artisan migrate
+         php artisan db:seed
